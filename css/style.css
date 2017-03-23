@@ -21,10 +21,14 @@
 .mailster-multismtp-server:hover .mailster-multismtp-buttons{
 	visibility: visible;
 }
+.mailster-multismtp-servers div.mailster-multismtp-server:first-child .mailster-multismtp-buttons{
+	display: none;
+}
 .mailster-multismtp-server h5{
 	font-size: 14px;
 	border-bottom: 1px solid #ccc;
 	padding: 5px;
 	margin: 0;
 	font-weight: 700;
+	min-height: 18px;
 }

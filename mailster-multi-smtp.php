@@ -3,7 +3,7 @@
 Plugin Name: Mailster Multi SMTP
 Plugin URI: http://rxa.li/mailster?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster
 Description: Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
-Version: 1.0
+Version: 1.1
 Author: revaxarts.com
 Author URI: https://mailster.co
 Text Domain: mailster-multismtp
@@ -11,7 +11,7 @@ License: GPLv2 or later
 */
 
 
-define( 'MAILSTER_MULTISMTP_VERSION', '1.0' );
+define( 'MAILSTER_MULTISMTP_VERSION', '1.1' );
 define( 'MAILSTER_MULTISMTP_REQUIRED_VERSION', '2.2' );
 define( 'MAILSTER_MULTISMTP_DOMAIN', 'mailster-multismtp' );
 
@@ -61,6 +61,7 @@ class MailsterMultiSMTP {
 					'auth' => mailster_option( 'smtp_auth' ),
 					'user' => mailster_option( 'smtp_user' ),
 					'pwd' => mailster_option( 'smtp_pwd' ),
+					'allow_self_signed' => mailster_option( 'allow_self_signed' ),
 					),
 				),
 			);
@@ -157,6 +158,16 @@ class MailsterMultiSMTP {
 				$mailobject->mailer->Username = $server['user'];
 				$mailobject->mailer->Password = $server['pwd'];
 
+			}
+
+			if ( $server['allow_self_signed'] ) {
+				$this->SMTPOptions = array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true,
+					),
+				);
 			}
 		} else {
 
@@ -371,8 +382,8 @@ class MailsterMultiSMTP {
 		$readonly = ( in_array( $post->post_status, array( 'finished', 'active' ) ) || $post->post_status == 'autoresponder' && ! empty( $_GET['showstats'] ) ) ? 'readonly disabled' : '';
 
 		$data = wp_parse_args( get_post_meta( $post->ID, 'mailster-multismtp', true ), array(
-				'use_global' => true,
-				'selected' => null,
+			'use_global' => true,
+			'selected' => null,
 		) );
 
 		$server = $this->getactiveservers();
@@ -441,6 +452,7 @@ class MailsterMultiSMTP {
 		<?php */ ?>
 		<h4><?php _e( 'SMTP Servers', 'mailster-multismtp' ); ?>:</h4>
 		<p class="description"><?php _e( 'Add new SMTP servers with the button. You can disable each server with the checkbox on the top. The used server will be changed every time you send a message. If you define limits for each server the general limits get overwritten with the proper values', 'mailster-multismtp' ); ?></p>
+		<div class="mailster-multismtp-servers">
 	<?php
 		$options = mailster_option( 'multismtp' );
 
@@ -455,12 +467,15 @@ class MailsterMultiSMTP {
 		<h5><?php echo esc_attr( $option['host'] ); ?></h5>
 		<table class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Active', 'mailster-multismtp' ); ?></th>
-				<td><label><input type="hidden" name="mailster_options[multismtp][<?php echo $i ?>][active]" value=""><input type="checkbox" name="mailster_options[multismtp][<?php echo $i ?>][active]" value="1" <?php checked( isset( $option['active'] ) && $option['active'] ) ?>> <?php _e( 'use this server', 'mailster-multismtp' ) ?></label> </td>
+				<th scope="row"><?php esc_html_e( 'Active', 'mailster-multismtp' ); ?></th>
+				<td><label><input type="hidden" name="mailster_options[multismtp][<?php echo $i ?>][active]" value=""><input type="checkbox" name="mailster_options[multismtp][<?php echo $i ?>][active]" value="1" <?php checked( isset( $option['active'] ) && $option['active'] ) ?>> <?php esc_html_e( 'use this server', 'mailster-multismtp' ) ?></label> </td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Limits', 'mailster-multismtp' ); ?><p class="description"><?php _e( 'define the limits for this server', 'mailster-multismtp' ); ?></p></th>
-				<td><p><?php echo sprintf( __( 'Send max %1$s within %2$s hours', 'mailster-multismtp' ), '<input type="text" name="mailster_options[multismtp][' . $i . '][send_limit]" value="' . $option['send_limit'] . '" class="small-text">', '<input type="text" name="mailster_options[multismtp][' . $i . '][send_period]" value="' . $option['send_period'] . '" class="small-text">' )?></p>
+				<th scope="row"><?php esc_html_e( 'Limits', 'mailster-multismtp' ); ?><p class="description"><?php esc_html_e( 'define the limits for this server', 'mailster-multismtp' ); ?></p></th>
+				<td>
+			<p><?php echo sprintf( __( 'Send max %1$s within %2$s hours', 'mailster-multismtp' ), '<input type="text" name="mailster_options[multismtp][' . $i . '][send_limit]" value="' . $option['send_limit'] . '" class="small-text">', '<input type="text" name="mailster_options[multismtp][' . $i . '][send_period]" value="' . $option['send_period'] . '" class="small-text">' )?>
+
+			</p>
 			<p class="description"><?php echo sprintf( __( 'You can still send %1$s mails within the next %2$s', 'mailster-multismtp' ), '<strong>' . max( 0, $option['send_limit'] -( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_transient( '_mailster_send_period_' . $i ) : 0 ) ) ) . '</strong>' , '<strong>' . human_time_diff( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_option( '_transient_timeout__mailster_send_period_timeout_' . $i, ( time() + $option['send_period'] * 3600 ) ) : time() + $option['send_period'] * 3600 ) ) . '</strong>' ); ?>
 			</p>
 				</td>
@@ -471,13 +486,13 @@ class MailsterMultiSMTP {
 			</tr>
 			<tr valign="top">
 				<th scope="row">Timeout</th>
-				<td><span><input type="text" name="mailster_options[multismtp][<?php echo $i ?>][timeout]" value="<?php echo $option['timeout']; ?>" class="small-text"> <?php _e( 'seconds', 'mailster-multismtp' ); ?></span></td>
+				<td><span><input type="text" name="mailster_options[multismtp][<?php echo $i ?>][timeout]" value="<?php echo $option['timeout']; ?>" class="small-text"> <?php esc_html_e( 'seconds', 'mailster-multismtp' ); ?></span></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Secure connection', 'mailster-multismtp' ) ?></th>
+				<th scope="row"><?php esc_html_e( 'Secure connection', 'mailster-multismtp' ) ?></th>
 				<?php $secure = $option['secure']; ?>
 				<td>
-				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i ?>][secure]" value="" <?php if ( ! $secure ) { echo ' checked'; } ?> class="smtp secure" data-port="25"> <?php _e( 'none', 'mailster-multismtp' ) ?></label>
+				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i ?>][secure]" value="" <?php if ( ! $secure ) { echo ' checked'; } ?> class="smtp secure" data-port="25"> <?php esc_html_e( 'none', 'mailster-multismtp' ) ?></label>
 				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i ?>][secure]" value="ssl" <?php if ( $secure == 'ssl' ) { echo ' checked'; } ?> class="smtp secure" data-port="465"> SSL</label>
 				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i ?>][secure]" value="tls" <?php if ( $secure == 'tls' ) { echo ' checked'; } ?> class="smtp secure" data-port="465"> TLS</label>
 				 </td>
@@ -488,7 +503,7 @@ class MailsterMultiSMTP {
 				<?php $smtpauth = $option['auth'];?>
 				<label>
 				<select name="mailster_options[multismtp][<?php echo $i ?>][auth]">
-					<option value="0" <?php selected( ! $smtpauth );?>><?php _e( 'none', 'mailster' ) ?></option>
+					<option value="0" <?php selected( ! $smtpauth ); ?>><?php esc_html_e( 'none', 'mailster-multismtp' ) ?></option>
 					<option value="PLAIN" <?php selected( 'PLAIN', $smtpauth );?>>PLAIN</option>
 					<option value="LOGIN" <?php selected( 'LOGIN', $smtpauth );?>>LOGIN</option>
 					<option value="CRAM-MD5" <?php selected( 'CRAM-MD5', $smtpauth );?>>CRAM-MD5</option>
@@ -496,20 +511,23 @@ class MailsterMultiSMTP {
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Username', 'mailster-multismtp' ) ?></th>
+				<th scope="row"><?php esc_html_e( 'Username', 'mailster-multismtp' ) ?></th>
 				<td><input type="text" name="mailster_options[multismtp][<?php echo $i ?>][user]" value="<?php echo esc_attr( $option['user'] ); ?>" class="regular-text"></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><?php _e( 'Password', 'mailster-multismtp' ) ?></th>
+				<th scope="row"><?php esc_html_e( 'Password', 'mailster-multismtp' ) ?></th>
 				<td><input type="password" name="mailster_options[multismtp][<?php echo $i ?>][pwd]" value="<?php echo esc_attr( $option['pwd'] ); ?>" class="regular-text"></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?php esc_html_e( 'Self Signed Certificates', 'mailster-multismtp' ) ?></th>
+				<td><label title="<?php esc_html_e( 'Enabling this option may solve connection problems to SMTP servers', 'mailster-multismtp' ); ?>"><input type="hidden" name="mailster_options[multismtp][<?php echo $i ?>][allow_self_signed]" value=""><input type="checkbox" name="mailster_options[multismtp][<?php echo $i ?>][allow_self_signed]" value="1" <?php checked( $option['allow_self_signed'] );?>> <?php esc_html_e( 'allow self signed certificates', 'mailster-multismtp' ) ?></label>
+				</td>
 			</tr>
 		</table>
 		</div>
 
-<?php
-	}
-
-?>
+<?php } ?>
+		</div>
 		<input type="hidden" name="mailster_options[multismtp_current]" value="<?php echo esc_attr( mailster_option( 'multismtp_current' ) ); ?>">
 		<p><a class="button mailster-multismtp-add"><?php _e( 'add SMTP Server', 'mailster-multismtp' ); ?></a></p>
 	<?php

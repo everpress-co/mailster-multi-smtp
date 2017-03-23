@@ -1,12 +1,13 @@
 jQuery(document).ready(function($) {
 
+	"use strict"
+
 	$('#tab-delivery')
 	.on('click', '.mailster-multismtp-add', function(){
 
 		var servers = $('.mailster-multismtp-server'),
 			count = servers.length,
 			el = servers.eq(0).clone().hide();
-
 
 		el.find('input').each(function(){
 			var _this = $(this);
