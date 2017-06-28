@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Mailster Multi SMTP
-Plugin URI: http://rxa.li/mailster?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster
+Plugin URI: https://mailster.co/?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster
 Description: Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
 Version: 1.1
-Author: revaxarts.com
+Author: EverPress
 Author URI: https://mailster.co
 Text Domain: mailster-multismtp
 License: GPLv2 or later
@@ -547,7 +547,7 @@ class MailsterMultiSMTP {
 ?>
 	<div id="message" class="error">
 	  <p>
-	   <strong>Multi SMTP for Mailster</strong> requires the <a href="http://rxa.li/mailster?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION?></strong>. Plugin deactivated.
+	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION?></strong>. Plugin deactivated.
 	  </p>
 	</div>
 		<?php

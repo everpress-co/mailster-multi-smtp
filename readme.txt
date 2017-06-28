@@ -1,11 +1,11 @@
 === Mailster Multi SMTP ===
 Contributors: everpress, revaxarts
-Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp, revaxarts
+Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp
 Requires at least: 3.8
-Tested up to: 4.7.3
+Tested up to: 4.8
 Stable tag: 1.1
 License: GPLv2 or later
-Author: revaxarts
+Author: EverPress
 Author URI: https://mailster.co
 
 == Description ==
@@ -30,5 +30,5 @@ added: option to allow self signed certificates
 
 == Additional Info One ==
 
-This Plugin requires [Mailster Newsletter Plugin for WordPress](http://rxa.li/mailster?utm_campaign=wporg&utm_source=Mailster+Multi+SMTP)
+This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Multi+SMTP)
 
