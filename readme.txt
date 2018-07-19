@@ -2,8 +2,8 @@
 Contributors: everpress, revaxarts
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp
 Requires at least: 3.8
-Tested up to: 4.8
-Stable tag: 1.1
+Tested up to: 4.9
+Stable tag: 1.2
 License: GPLv2 or later
 Author: EverPress
 Author URI: https://mailster.co
@@ -21,6 +21,11 @@ Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
 5. Send a testmail
 
 == Changelog ==
+
+= 1.2 =
+
+* updated file structure
+* added tests
 
 = 1.1 =
 added: option to allow self signed certificates
