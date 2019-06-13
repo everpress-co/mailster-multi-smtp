@@ -1,5 +1,5 @@
 === Mailster Multi SMTP ===
-Contributors: everpress, revaxarts
+Contributors: everpress
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp
 Requires at least: 3.8
 Tested up to: 5.0
