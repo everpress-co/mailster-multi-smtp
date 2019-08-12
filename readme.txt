@@ -2,7 +2,7 @@
 Contributors: everpress
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp
 Requires at least: 3.8
-Tested up to: 5.0
+Tested up to: 5.2
 Stable tag: 1.2
 License: GPLv2 or later
 Author: EverPress
