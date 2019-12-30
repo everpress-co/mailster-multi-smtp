@@ -28,7 +28,7 @@ class MailsterMultiSMTP {
 
 		if ( function_exists( 'mailster' ) ) {
 
-			mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 3600, 'delivery_method' );
+			mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 3600, 'delivery_method' );
 
 			$defaults = array(
 				'multismtp_current'       => 0,
@@ -74,7 +74,7 @@ class MailsterMultiSMTP {
 
 			if ( mailster_option( 'deliverymethod' ) == 'multismtp' ) {
 				mailster_update_option( 'deliverymethod', 'simple' );
-				mailster_notice( sprintf( __( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 3600, 'delivery_method' );
+				mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 3600, 'delivery_method' );
 			}
 		}
 
@@ -144,7 +144,7 @@ class MailsterMultiSMTP {
 
 				if ( ! $mail->send_notification( 'Sendtest', 'this test message can get deleted', array( 'notification' => '' ), false ) ) {
 					$error_message = strip_tags( $mail->get_errors() );
-					$msg           = sprintf( 'You are not able to send mails with server %s!', '<strong>' . $server['host'] . '</strong>' );
+					$msg           = sprintf( esc_html__( 'You are not able to send mails with server %s!', 'mailster-multismtp' ), '<strong>' . $server['host'] . '</strong>' );
 
 					if ( false !== stripos( $error_message, 'smtp connect()' ) ) {
 						$tests->error( $msg . '<br>' . $error_message, 'https://kb.mailster.co/smtp-error-could-not-connect-to-smtp-host/' );
@@ -363,7 +363,7 @@ class MailsterMultiSMTP {
 			$mailster_multismtp_sent_within_period++;
 		} else {
 			$servers = $this->get_active_servers();
-			$mailobject->set_error( sprintf( __( 'Server #%1$d (%2$s) threw that error', 'mailster-multismtp' ), intval( $mailster_multismtp_current ) + 1, $servers[ $mailster_multismtp_current ]['host'] ) );
+			$mailobject->set_error( sprintf( esc_html__( 'Server #%1$d (%2$s) threw that error', 'mailster-multismtp' ), intval( $mailster_multismtp_current ) + 1, $servers[ $mailster_multismtp_current ]['host'] ) );
 		}
 
 	}
@@ -430,8 +430,8 @@ class MailsterMultiSMTP {
 
 		?>
 		<style>#mailster_multismtp {display: inherit;}</style>
-		<p><label><input type="radio" name="mailster_multismtp[use_global]" value="1" <?php echo $readonly; ?><?php checked( ! empty( $data['use_global'] ) ); ?> onchange="jQuery('.mailster-multismtp-server').prop('disabled', jQuery(this).is(':checked')).prop('readonly', jQuery(this).is(':checked'))"> <?php _e( 'use global settings', 'mailster-multismtp' ); ?></label></p><hr>
-		<p><label><input type="radio" name="mailster_multismtp[use_global]" value="0" <?php echo $readonly; ?><?php checked( empty( $data['use_global'] ) ); ?> onchange="jQuery('.mailster-multismtp-server').prop('disabled', !jQuery(this).is(':checked')).prop('readonly', !jQuery(this).is(':checked'))"> <?php _e( 'use these servers for this campaign', 'mailster-multismtp' ); ?></label></p>
+		<p><label><input type="radio" name="mailster_multismtp[use_global]" value="1" <?php echo $readonly; ?><?php checked( ! empty( $data['use_global'] ) ); ?> onchange="jQuery('.mailster-multismtp-server').prop('disabled', jQuery(this).is(':checked')).prop('readonly', jQuery(this).is(':checked'))"> <?php esc_html_e( 'use global settings', 'mailster-multismtp' ); ?></label></p><hr>
+		<p><label><input type="radio" name="mailster_multismtp[use_global]" value="0" <?php echo $readonly; ?><?php checked( empty( $data['use_global'] ) ); ?> onchange="jQuery('.mailster-multismtp-server').prop('disabled', !jQuery(this).is(':checked')).prop('readonly', !jQuery(this).is(':checked'))"> <?php esc_html_e( 'use these servers for this campaign', 'mailster-multismtp' ); ?></label></p>
 		<h4></h4>
 		<ul>
 		<?php
@@ -487,25 +487,25 @@ class MailsterMultiSMTP {
 		/*
 		?><table class="form-table">
 			<tr valign="top">
-				<th scope="row"><?php _e('Campaign based', 'mailster-multismtp'); ?></th>
-				<td><label><input type="checkbox" name="mailster_options[multismtp_campaignbased]" value="1" <?php checked(mailster_option('multismtp_campaignbased')) ?>> <?php _e('select servers on a campaign basis', 'mailster-multismtp') ?></label> </td>
+				<th scope="row"><?php esc_html_e('Campaign based', 'mailster-multismtp'); ?></th>
+				<td><label><input type="checkbox" name="mailster_options[multismtp_campaignbased]" value="1" <?php checked(mailster_option('multismtp_campaignbased')) ?>> <?php esc_html_e('select servers on a campaign basis', 'mailster-multismtp') ?></label> </td>
 			</tr>
 		</table>
 		<?php */
 		?>
-		<h4><?php _e( 'SMTP Servers', 'mailster-multismtp' ); ?>:</h4>
-		<p class="description"><?php _e( 'Add new SMTP servers with the button. You can disable each server with the checkbox on the top. The used server will be changed every time you send a message. If you define limits for each server the general limits get overwritten with the proper values', 'mailster-multismtp' ); ?></p>
+		<h4><?php esc_html_e( 'SMTP Servers', 'mailster-multismtp' ); ?>:</h4>
+		<p class="description"><?php esc_html_e( 'Add new SMTP servers with the button. You can disable each server with the checkbox on the top. The used server will be changed every time you send a message. If you define limits for each server the general limits get overwritten with the proper values', 'mailster-multismtp' ); ?></p>
 		<div class="mailster-multismtp-servers">
 		<?php
 		$options = mailster_option( 'multismtp' );
 
 		ksort( $options );
 
-		foreach ( $options as $i => $option ) {
+		foreach ( $options as $i => $option ) :
 			?>
 		<div class="mailster-multismtp-server">
 		<div class="mailster-multismtp-buttons">
-			<a class="mailster-multismtp-remove" href="#"><?php _e( 'remove', 'mailster-multismtp' ); ?></a>
+			<a class="mailster-multismtp-remove" href="#"><?php esc_html_e( 'remove', 'mailster-multismtp' ); ?></a>
 		</div>
 		<h5><?php echo esc_attr( $option['host'] ); ?></h5>
 		<table class="form-table">
@@ -516,10 +516,10 @@ class MailsterMultiSMTP {
 			<tr valign="top">
 				<th scope="row"><?php esc_html_e( 'Limits', 'mailster-multismtp' ); ?><p class="description"><?php esc_html_e( 'define the limits for this server', 'mailster-multismtp' ); ?></p></th>
 				<td>
-			<p><?php echo sprintf( __( 'Send max %1$s within %2$s hours', 'mailster-multismtp' ), '<input type="text" name="mailster_options[multismtp][' . $i . '][send_limit]" value="' . $option['send_limit'] . '" class="small-text">', '<input type="text" name="mailster_options[multismtp][' . $i . '][send_period]" value="' . $option['send_period'] . '" class="small-text">' ); ?>
+			<p><?php echo sprintf( esc_html__( 'Send max %1$s within %2$s hours', 'mailster-multismtp' ), '<input type="text" name="mailster_options[multismtp][' . $i . '][send_limit]" value="' . $option['send_limit'] . '" class="small-text">', '<input type="text" name="mailster_options[multismtp][' . $i . '][send_period]" value="' . $option['send_period'] . '" class="small-text">' ); ?>
 
 			</p>
-			<p class="description"><?php echo sprintf( __( 'You can still send %1$s mails within the next %2$s', 'mailster-multismtp' ), '<strong>' . max( 0, $option['send_limit'] - ( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_transient( '_mailster_send_period_' . $i ) : 0 ) ) ) . '</strong>', '<strong>' . human_time_diff( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_option( '_transient_timeout__mailster_send_period_timeout_' . $i, ( time() + $option['send_period'] * 3600 ) ) : time() + $option['send_period'] * 3600 ) ) . '</strong>' ); ?>
+			<p class="description"><?php echo sprintf( esc_html__( 'You can still send %1$s mails within the next %2$s', 'mailster-multismtp' ), '<strong>' . max( 0, $option['send_limit'] - ( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_transient( '_mailster_send_period_' . $i ) : 0 ) ) ) . '</strong>', '<strong>' . human_time_diff( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_option( '_transient_timeout__mailster_send_period_timeout_' . $i, ( time() + $option['send_period'] * 3600 ) ) : time() + $option['send_period'] * 3600 ) ) . '</strong>' ); ?>
 			</p>
 				</td>
 			</tr>
@@ -535,24 +535,9 @@ class MailsterMultiSMTP {
 				<th scope="row"><?php esc_html_e( 'Secure connection', 'mailster-multismtp' ); ?></th>
 				<?php $secure = $option['secure']; ?>
 				<td>
-				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="" 
-																						<?php
-																						if ( ! $secure ) {
-																							echo ' checked'; }
-																						?>
-				 class="smtp secure" data-port="25"> <?php esc_html_e( 'none', 'mailster-multismtp' ); ?></label>
-				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="ssl" 
-																						<?php
-																						if ( $secure == 'ssl' ) {
-																							echo ' checked'; }
-																						?>
-				 class="smtp secure" data-port="465"> SSL</label>
-				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="tls" 
-																						<?php
-																						if ( $secure == 'tls' ) {
-																							echo ' checked'; }
-																						?>
-				 class="smtp secure" data-port="465"> TLS</label>
+				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="" <?php checked( ! $secure ); ?> class="smtp secure" data-port="25"> <?php esc_html_e( 'none', 'mailster-multismtp' ); ?></label>
+				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="ssl" <?php checked( $secure, 'ssl' ); ?> class="smtp secure" data-port="465"> SSL</label>
+				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="tls" <?php checked( $secure, 'tls' ); ?> class="smtp secure" data-port="465"> TLS</label>
 				 </td>
 			</tr>
 			<tr valign="top">
@@ -584,10 +569,10 @@ class MailsterMultiSMTP {
 		</table>
 		</div>
 
-<?php } ?>
+<?php endforeach; ?>
 		</div>
 		<input type="hidden" name="mailster_options[multismtp_current]" value="<?php echo esc_attr( mailster_option( 'multismtp_current' ) ); ?>">
-		<p><a class="button mailster-multismtp-add"><?php _e( 'add SMTP Server', 'mailster-multismtp' ); ?></a></p>
+		<p><a class="button mailster-multismtp-add"><?php esc_html_e( 'add SMTP Server', 'mailster-multismtp' ); ?></a></p>
 		<?php
 
 	}
@@ -605,7 +590,7 @@ class MailsterMultiSMTP {
 		?>
 	<div id="message" class="error">
 	  <p>
-	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
+	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster&utm_medium=plugin">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
 	  </p>
 	</div>
 		<?php
@@ -646,7 +631,7 @@ class MailsterMultiSMTP {
 
 					} else {
 
-						add_settings_error( 'mailster_options', 'mailster_options', sprintf( __( 'Not able to connected to %1$s via port %2$s! You may not be able to send mails cause of the locked port %3$s. Please contact your host or choose a different delivery method!', 'mailster-multismtp' ), '"' . $host . '"', $port, $port ) );
+						add_settings_error( 'mailster_options', 'mailster_options', sprintf( esc_html__( 'Not able to connected to %1$s via port %2$s! You may not be able to send mails cause of the locked port %3$s. Please contact your host or choose a different delivery method!', 'mailster-multismtp' ), '"' . $host . '"', $port, $port ) );
 						unset( $options['multismtp'][ $i ]['active'] );
 
 					}
