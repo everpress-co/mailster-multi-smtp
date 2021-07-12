@@ -28,7 +28,7 @@ class MailsterMultiSMTP {
 
 		if ( function_exists( 'mailster' ) ) {
 
-			mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 3600, 'delivery_method' );
+			mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 360, 'delivery_method' );
 
 			$defaults = array(
 				'multismtp_current'       => 0,
@@ -74,7 +74,7 @@ class MailsterMultiSMTP {
 
 			if ( mailster_option( 'deliverymethod' ) == 'multismtp' ) {
 				mailster_update_option( 'deliverymethod', 'simple' );
-				mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 3600, 'delivery_method' );
+				mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 360, 'delivery_method' );
 			}
 		}
 
