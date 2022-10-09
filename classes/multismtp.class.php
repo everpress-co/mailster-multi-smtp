@@ -590,7 +590,7 @@ class MailsterMultiSMTP {
 		?>
 	<div id="message" class="error">
 	  <p>
-	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster&utm_medium=plugin">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
+	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Multi+SMTP">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
 	  </p>
 	</div>
 		<?php
