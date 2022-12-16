@@ -3,7 +3,7 @@
 Contributors: everpress, xaverb  
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp  
 Requires at least: 3.8  
-Tested up to: 6.0  
+Tested up to: 6.1  
 Stable tag: 1.3  
 License: GPLv2 or later
 
