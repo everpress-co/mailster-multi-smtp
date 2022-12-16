@@ -4,7 +4,7 @@ Contributors: everpress, xaverb
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp  
 Requires at least: 3.8  
 Tested up to: 6.1  
-Stable tag: 1.3  
+Stable tag: 1.3.1  
 License: GPLv2 or later
 
 ## Description
@@ -22,6 +22,10 @@ Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
 5. Send a testmail
 
 ## Changelog
+
+### 1.3.1
+
+-   do not use `create_function` as they are no longer supported.
 
 ### 1.3
 
