@@ -1,17 +1,17 @@
 # Mailster Multi SMTP
 
-Contributors: everpress  
+Contributors: everpress, xaverb  
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp  
 Requires at least: 3.8  
-Tested up to: 5.9  
-Stable tag: 1.3  
+Tested up to: 6.1  
+Stable tag: 1.3.1  
 License: GPLv2 or later
 
 ## Description
 
 Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
 
-> This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Multi+SMTP&utm_medium=readme)
+> This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Multi+SMTP)
 
 ## Installation
 
@@ -22,6 +22,10 @@ Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
 5. Send a testmail
 
 ## Changelog
+
+### 1.3.1
+
+-   do not use `create_function` as they are no longer supported.
 
 ### 1.3
 
@@ -42,4 +46,4 @@ added: option to allow self signed certificates
 
 ## Additional Info
 
-This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=Mailster+Multi+SMTP&utm_medium=readme)
+This Plugin requires [Mailster Newsletter Plugin for WordPress](https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=readme&utm_term=Multi+SMTP)

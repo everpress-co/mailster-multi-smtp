@@ -345,7 +345,7 @@ class MailsterMultiSMTP {
 		if ( ! $mailster_multismtp_sentlimitreached ) {
 			$mailobject->do_send();
 		} else {
-			add_filter( 'pre_set_transient__mailster_send_period', create_function( '$value', 'return ' . mailster_option( 'send_limit' ) . ';' ) );
+			add_filter( 'pre_set_transient__mailster_send_period', array( &$this, 'pre_set_transient__mailster_send_period' ) );
 
 			// get the earliest possible time
 			$servers = $this->get_active_servers();
@@ -366,6 +366,11 @@ class MailsterMultiSMTP {
 			$mailobject->set_error( sprintf( esc_html__( 'Server #%1$d (%2$s) threw that error', 'mailster-multismtp' ), intval( $mailster_multismtp_current ) + 1, $servers[ $mailster_multismtp_current ]['host'] ) );
 		}
 
+	}
+
+
+	public function pre_set_transient__mailster_send_period( $value ) {
+		return mailster_option( 'send_limit' );
 	}
 
 
@@ -590,7 +595,7 @@ class MailsterMultiSMTP {
 		?>
 	<div id="message" class="error">
 	  <p>
-	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=Multi+SMTP+for+Mailster&utm_medium=plugin">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
+	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Multi+SMTP">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
 	  </p>
 	</div>
 		<?php
