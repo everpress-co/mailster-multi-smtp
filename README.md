@@ -1,9 +1,9 @@
 # Mailster Multi SMTP
 
-Contributors: everpress, xaverb  
+Contributors: everpress, mailster, xaverb  
 Tags: mailster, newsletter, delivery, deliverymethod, email, smtp, multi-smtp  
-Requires at least: 3.8  
-Tested up to: 6.1  
+Requires at least: 6.0  
+Tested up to: 6.5  
 Stable tag: 1.3.1  
 License: GPLv2 or later
 
@@ -25,16 +25,16 @@ Allows to use multiple SMTP connection for the Mailster Newsletter Plugin
 
 ### 1.3.1
 
--   do not use `create_function` as they are no longer supported.
+- do not use `create_function` as they are no longer supported.
 
 ### 1.3
 
--   escape some unescaped strings
+- escape some unescaped strings
 
 ### 1.2
 
--   updated file structure
--   added tests
+- updated file structure
+- added tests
 
 ### 1.1
 
@@ -42,7 +42,7 @@ added: option to allow self signed certificates
 
 ### 1.0
 
--   initial release
+- initial release
 
 ## Additional Info
 

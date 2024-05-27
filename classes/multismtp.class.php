@@ -59,7 +59,6 @@ class MailsterMultiSMTP {
 				}
 			}
 		}
-
 	}
 
 
@@ -77,7 +76,6 @@ class MailsterMultiSMTP {
 				mailster_notice( sprintf( esc_html__( 'Change the delivery method on the %s!', 'mailster-multismtp' ), '<a href="edit.php?post_type=newsletter&page=mailster_settings&mailster_remove_notice=delivery_method#delivery">' . __( 'Settings Page', 'mailster-multismtp' ) . '</a>' ), '', 360, 'delivery_method' );
 			}
 		}
-
 	}
 
 
@@ -112,7 +110,6 @@ class MailsterMultiSMTP {
 				add_filter( 'pre_set_transient__mailster_send_period', array( $this, 'save_sent_within_period' ) );
 			}
 		}
-
 	}
 
 
@@ -135,7 +132,7 @@ class MailsterMultiSMTP {
 
 		foreach ( $servers as $i => $server ) {
 
-			$tests[ 'Multi SMPT server ' . ( $i + 1 ) ] = function( $tests ) use ( &$server ) {
+			$tests[ 'Multi SMPT server ' . ( $i + 1 ) ] = function ( $tests ) use ( &$server ) {
 
 				$mail          = mailster( 'mail' );
 				$mail->to      = 'deadend@newsletter-plugin.com';
@@ -156,7 +153,7 @@ class MailsterMultiSMTP {
 				}
 			};
 
-		};
+		}
 
 		return $tests;
 	}
@@ -206,7 +203,6 @@ class MailsterMultiSMTP {
 			$mailster_multismtp_sentlimitreached = true;
 
 		}
-
 	}
 
 
@@ -264,7 +260,6 @@ class MailsterMultiSMTP {
 		mailster_update_option( 'multismtp_current', $mailster_multismtp_current + 1 );
 
 		return $server;
-
 	}
 
 
@@ -325,7 +320,6 @@ class MailsterMultiSMTP {
 	public function presend( $mailobject ) {
 
 		$mailobject->pre_send();
-
 	}
 
 
@@ -360,12 +354,11 @@ class MailsterMultiSMTP {
 			$mailobject->set_error( $msg );
 		}
 		if ( $mailobject->sent ) {
-			$mailster_multismtp_sent_within_period++;
+			++$mailster_multismtp_sent_within_period;
 		} else {
 			$servers = $this->get_active_servers();
 			$mailobject->set_error( sprintf( esc_html__( 'Server #%1$d (%2$s) threw that error', 'mailster-multismtp' ), intval( $mailster_multismtp_current ) + 1, $servers[ $mailster_multismtp_current ]['host'] ) );
 		}
-
 	}
 
 
@@ -391,7 +384,6 @@ class MailsterMultiSMTP {
 			update_post_meta( $post_id, 'mailster-multismtp', $save );
 
 		}
-
 	}
 
 
@@ -502,7 +494,7 @@ class MailsterMultiSMTP {
 		<p class="description"><?php esc_html_e( 'Add new SMTP servers with the button. You can disable each server with the checkbox on the top. The used server will be changed every time you send a message. If you define limits for each server the general limits get overwritten with the proper values', 'mailster-multismtp' ); ?></p>
 		<div class="mailster-multismtp-servers">
 		<?php
-		$options = mailster_option( 'multismtp' );
+		$options = mailster_option( 'multismtp', array() );
 
 		ksort( $options );
 
@@ -521,10 +513,10 @@ class MailsterMultiSMTP {
 			<tr valign="top">
 				<th scope="row"><?php esc_html_e( 'Limits', 'mailster-multismtp' ); ?><p class="description"><?php esc_html_e( 'define the limits for this server', 'mailster-multismtp' ); ?></p></th>
 				<td>
-			<p><?php echo sprintf( esc_html__( 'Send max %1$s within %2$s hours', 'mailster-multismtp' ), '<input type="text" name="mailster_options[multismtp][' . $i . '][send_limit]" value="' . $option['send_limit'] . '" class="small-text">', '<input type="text" name="mailster_options[multismtp][' . $i . '][send_period]" value="' . $option['send_period'] . '" class="small-text">' ); ?>
+			<p><?php printf( esc_html__( 'Send max %1$s within %2$s hours', 'mailster-multismtp' ), '<input type="text" name="mailster_options[multismtp][' . $i . '][send_limit]" value="' . $option['send_limit'] . '" class="small-text">', '<input type="text" name="mailster_options[multismtp][' . $i . '][send_period]" value="' . $option['send_period'] . '" class="small-text">' ); ?>
 
 			</p>
-			<p class="description"><?php echo sprintf( esc_html__( 'You can still send %1$s mails within the next %2$s', 'mailster-multismtp' ), '<strong>' . max( 0, $option['send_limit'] - ( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_transient( '_mailster_send_period_' . $i ) : 0 ) ) ) . '</strong>', '<strong>' . human_time_diff( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_option( '_transient_timeout__mailster_send_period_timeout_' . $i, ( time() + $option['send_period'] * 3600 ) ) : time() + $option['send_period'] * 3600 ) ) . '</strong>' ); ?>
+			<p class="description"><?php printf( esc_html__( 'You can still send %1$s mails within the next %2$s', 'mailster-multismtp' ), '<strong>' . max( 0, $option['send_limit'] - ( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_transient( '_mailster_send_period_' . $i ) : 0 ) ) ) . '</strong>', '<strong>' . human_time_diff( ( get_transient( '_mailster_send_period_timeout_' . $i ) ? get_option( '_transient_timeout__mailster_send_period_timeout_' . $i, ( time() + $option['send_period'] * 3600 ) ) : time() + $option['send_period'] * 3600 ) ) . '</strong>' ); ?>
 			</p>
 				</td>
 			</tr>
@@ -543,7 +535,7 @@ class MailsterMultiSMTP {
 				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="" <?php checked( ! $secure ); ?> class="smtp secure" data-port="25"> <?php esc_html_e( 'none', 'mailster-multismtp' ); ?></label>
 				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="ssl" <?php checked( $secure, 'ssl' ); ?> class="smtp secure" data-port="465"> SSL</label>
 				<label><input type="radio" name="mailster_options[multismtp][<?php echo $i; ?>][secure]" value="tls" <?php checked( $secure, 'tls' ); ?> class="smtp secure" data-port="465"> TLS</label>
-				 </td>
+				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row">SMTPAuth</th>
@@ -579,7 +571,6 @@ class MailsterMultiSMTP {
 		<input type="hidden" name="mailster_options[multismtp_current]" value="<?php echo esc_attr( mailster_option( 'multismtp_current' ) ); ?>">
 		<p><a class="button mailster-multismtp-add"><?php esc_html_e( 'add SMTP Server', 'mailster-multismtp' ); ?></a></p>
 		<?php
-
 	}
 
 
@@ -594,9 +585,9 @@ class MailsterMultiSMTP {
 	public function notice() {
 		?>
 	<div id="message" class="error">
-	  <p>
-	   <strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Multi+SMTP">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
-	  </p>
+		<p>
+		<strong>Multi SMTP for Mailster</strong> requires the <a href="https://mailster.co/?utm_campaign=wporg&utm_source=wordpress.org&utm_medium=plugin&utm_term=Multi+SMTP">Mailster Newsletter Plugin</a>, at least version <strong><?php echo MAILSTER_MULTISMTP_REQUIRED_VERSION; ?></strong>. Plugin deactivated.
+		</p>
 	</div>
 		<?php
 	}
@@ -650,6 +641,4 @@ class MailsterMultiSMTP {
 
 		return $options;
 	}
-
-
 }
